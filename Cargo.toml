@@ -1,0 +1,11 @@
+[package]
+name = "triangle_matrix"
+authors = ["Christopher Edward Dawn"]
+version = "0.1.0"
+edition = "2021"
+description = "Triangle matrix indexing operations"
+readme = "README.md"
+repository = "https://github.com/cedtwo/triangle_matrix.git"
+license = "MIT OR Apache-2.0"
+keywords = ["triangle", "matrix", "index"]
+categories = ["data-structures", "algorithms"]
