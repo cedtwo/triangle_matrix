@@ -51,6 +51,7 @@ where
     fn get_col_indices(&self, i: usize) -> impl Iterator<Item = usize>;
 }
 
+/// Upper triangle implementation.
 impl<T: TriangleType<UpperTriangle>> TriangleIndex<UpperTriangle> for T
 where
     Self::Target: Index<usize> + IndexMut<usize>,
@@ -72,6 +73,7 @@ where
     }
 }
 
+/// Lower triangle implementation.
 impl<T: TriangleType<LowerTriangle>> TriangleIndex<LowerTriangle> for T
 where
     Self::Target: Index<usize> + IndexMut<usize>,
