@@ -10,8 +10,7 @@ pub enum LowerTriangle {}
 
 /// A triangle matrix abstraction type.
 ///
-/// This should be implemented on a type where the target of `Deref` and `DerefMut`
-/// is the inner collection, `C`.
+/// This should be implemented on a type that can retrieve the length of an axis.
 pub trait TriangleType<Ty>: Deref + DerefMut
 where
     Self::Target: Index<usize> + IndexMut<usize>,
