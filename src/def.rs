@@ -1,21 +1,27 @@
 //! Triangle matrix type definition.
 
-use std::ops::{Deref, DerefMut, Index, IndexMut};
-
-/// Upper triangle marker type.
-pub enum UpperTriangle {}
-
-/// Lower triange marker type.
-pub enum LowerTriangle {}
+use std::ops::{Index, IndexMut};
 
 /// A triangle matrix abstraction type.
-///
-/// This should be implemented on a type where the target of `Deref` and `DerefMut`
-/// is the inner collection, `C`.
-pub trait TriangleType<Ty>: Deref + DerefMut
+pub trait Triangle
 where
-    Self::Target: Index<usize> + IndexMut<usize>,
+    Self::Inner: Index<usize>,
 {
+    /// The inner collection type
+    type Inner;
+
     /// The length of either axis of the array.
     fn n(&self) -> usize;
+
+    /// The inner collection.
+    fn inner(&self) -> &Self::Inner;
+}
+
+/// A mutable triangle matrix abstraction type.
+pub trait TriangleMut: Triangle
+where
+    Self::Inner: IndexMut<usize>,
+{
+    /// The inner collection.
+    fn inner_mut(&mut self) -> &mut Self::Inner;
 }
