@@ -154,12 +154,12 @@ mod tests {
         #[test]
         fn test_get_element_mut() {
             #[rustfmt::skip]
-                let v = vec![
-                    0, 1, 2, 3,
-                       4, 5, 6,
-                          7, 8,
-                             9,
-                ];
+            let v = vec![
+                0, 1, 2, 3,
+                   4, 5, 6,
+                      7, 8,
+                         9,
+            ];
             let n = 5;
             let mut m = UpTriVec(n, v);
             *m.get_element_mut(1, 2) = 10;
@@ -172,12 +172,12 @@ mod tests {
         #[test]
         fn test_get_row_start() {
             #[rustfmt::skip]
-                let v = vec![
-                    0, 1, 2, 3,
-                       4, 5, 6,
-                          7, 8,
-                             9,
-                ];
+            let v = vec![
+                0, 1, 2, 3,
+                   4, 5, 6,
+                      7, 8,
+                         9,
+            ];
             let n = 5;
             let m = UpTriVec(n, v);
 
@@ -190,12 +190,12 @@ mod tests {
         #[test]
         fn test_get_col_start() {
             #[rustfmt::skip]
-                let v = vec![
-                    0, 1, 2, 3,
-                       4, 5, 6,
-                          7, 8,
-                             9,
-                ];
+            let v = vec![
+                0, 1, 2, 3,
+                   4, 5, 6,
+                      7, 8,
+                         9,
+            ];
             let n = 5;
             let m = UpTriVec(n, v);
 
@@ -208,12 +208,12 @@ mod tests {
         #[test]
         fn test_get_row_indices() {
             #[rustfmt::skip]
-                let v = vec![
-                    0, 1, 2, 3,
-                       4, 5, 6,
-                          7, 8,
-                             9,
-                ];
+            let v = vec![
+                0, 1, 2, 3,
+                   4, 5, 6,
+                      7, 8,
+                         9,
+            ];
             let n = 5;
             let m = UpTriVec(n, v);
 
@@ -226,12 +226,12 @@ mod tests {
         #[test]
         fn test_get_col_indices() {
             #[rustfmt::skip]
-                let v = vec![
-                    0, 1, 2, 3,
-                       4, 5, 6,
-                          7, 8,
-                             9,
-                ];
+            let v = vec![
+                0, 1, 2, 3,
+                   4, 5, 6,
+                      7, 8,
+                         9,
+            ];
             let n = 5;
             let m = UpTriVec(n, v);
 
@@ -244,12 +244,12 @@ mod tests {
         #[test]
         fn test_get_row() {
             #[rustfmt::skip]
-                let v = vec![
-                    0, 1, 2, 3,
-                       4, 5, 6,
-                          7, 8,
-                             9,
-                ];
+            let v = vec![
+                0, 1, 2, 3,
+                   4, 5, 6,
+                      7, 8,
+                         9,
+            ];
             let n = 5;
             let m = UpTriVec(n, v);
 
@@ -262,12 +262,12 @@ mod tests {
         #[test]
         fn test_get_col() {
             #[rustfmt::skip]
-                let v = vec![
-                    0, 1, 2, 3,
-                       4, 5, 6,
-                          7, 8,
-                             9,
-                ];
+            let v = vec![
+                0, 1, 2, 3,
+                   4, 5, 6,
+                      7, 8,
+                         9,
+            ];
             let n = 5;
             let m = UpTriVec(n, v);
 

@@ -25,8 +25,8 @@ pub trait BaseUpperIndex: Triangle {
     }
 
     /// Get all indices of a column.
-    fn get_col_indices(&self, i: usize, n: usize) -> impl Iterator<Item = usize> {
-        (0..=i).map(move |row_index| self.get_row_start_index(row_index, n) + i - row_index)
+    fn get_col_indices(&self, j: usize, n: usize) -> impl Iterator<Item = usize> {
+        (0..=j).map(move |row_index| self.get_row_start_index(row_index, n) + j - row_index)
     }
 }
 
@@ -54,12 +54,12 @@ mod tests {
     #[test]
     fn test_get_element_index() {
         #[rustfmt::skip]
-            let v = vec![
-                0, 1, 2, 3,
-                   4, 5, 6,
-                      7, 8,
-                         9,
-            ];
+        let v = vec![
+            0, 1, 2, 3,
+               4, 5, 6,
+                  7, 8,
+                     9,
+        ];
         let n = 4;
         let m = UpTriVec(n, v);
 
@@ -78,12 +78,12 @@ mod tests {
     #[test]
     fn test_get_row_start() {
         #[rustfmt::skip]
-            let v = vec![
-                0, 1, 2, 3,
-                   4, 5, 6,
-                      7, 8,
-                         9,
-            ];
+        let v = vec![
+            0, 1, 2, 3,
+               4, 5, 6,
+                  7, 8,
+                     9,
+        ];
         let n = 4;
         let m = UpTriVec(n, v);
 
@@ -96,12 +96,12 @@ mod tests {
     #[test]
     fn test_get_col_start() {
         #[rustfmt::skip]
-            let v = vec![
-                0, 1, 2, 3,
-                   4, 5, 6,
-                      7, 8,
-                         9,
-            ];
+        let v = vec![
+            0, 1, 2, 3,
+               4, 5, 6,
+                  7, 8,
+                     9,
+        ];
         let n = 4;
         let m = UpTriVec(n, v);
 
@@ -114,12 +114,12 @@ mod tests {
     #[test]
     fn test_get_row_indices() {
         #[rustfmt::skip]
-            let v = vec![
-                0, 1, 2, 3,
-                   4, 5, 6,
-                      7, 8,
-                         9,
-            ];
+        let v = vec![
+            0, 1, 2, 3,
+               4, 5, 6,
+                  7, 8,
+                     9,
+        ];
         let n = 4;
         let m = UpTriVec(n, v);
 
@@ -132,12 +132,12 @@ mod tests {
     #[test]
     fn test_get_col_indices() {
         #[rustfmt::skip]
-            let v = vec![
-                0, 1, 2, 3,
-                   4, 5, 6,
-                      7, 8,
-                         9,
-            ];
+        let v = vec![
+            0, 1, 2, 3,
+               4, 5, 6,
+                  7, 8,
+                     9,
+        ];
         let n = 4;
         let m = UpTriVec(n, v);
 
