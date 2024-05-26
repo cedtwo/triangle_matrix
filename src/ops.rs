@@ -12,7 +12,7 @@ mod tests {
 
     #[test]
     fn test_tri_num() {
-        // Sum the numbers from `1` to `n`
+        // Sum all numbers from `0` to `n`
         let acc_num = |n: usize| (0..=n).reduce(|a, b| a + b).unwrap();
 
         assert_eq!(tri_num(1), acc_num(1));
