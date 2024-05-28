@@ -1,8 +1,8 @@
 //! A symmetric upper triangle matrix abstraction.
 use std::ops::{Index, IndexMut};
 
-use super::base::BaseUpperIndex;
-use crate::TriangleMut;
+use super::base;
+use crate::{Triangle, TriangleMut};
 
 /// A symmetric upper triangle collection.
 ///
@@ -11,16 +11,16 @@ use crate::TriangleMut;
 ///
 /// For all indices `i` and `j` where `i != j`, all pairs of `(i, j)` are equal to
 /// the pair `(j, i)`.
-pub trait SymmetricUpperTri: BaseUpperIndex {
+pub trait SymmetricUpperTri: Triangle {
     /// Get a reference to an element.
     fn get_element<'a>(&'a self, i: usize, j: usize) -> &'a <Self::Inner as Index<usize>>::Output {
         debug_assert!(i <= self.n() - 1);
         debug_assert!(j <= self.n() - 1);
 
         let index = if i < j {
-            self.get_element_index(i, j - (i + 1), self.n() - 1)
+            base::get_element_index(i, j - (i + 1), self.n() - 1)
         } else {
-            self.get_element_index(j, i - (j + 1), self.n() - 1)
+            base::get_element_index(j, i - (j + 1), self.n() - 1)
         };
 
         &self.inner()[index]
@@ -47,13 +47,13 @@ pub trait SymmetricUpperTri: BaseUpperIndex {
         debug_assert!(i <= self.n() - 1);
 
         if i == 0 {
-            Box::new(BaseUpperIndex::get_row_indices(self, i, self.n() - 1))
+            Box::new(base::get_row_indices(i, self.n() - 1))
         } else if i == self.n() - 1 {
-            Box::new(BaseUpperIndex::get_col_indices(self, i - 1, self.n() - 1))
+            Box::new(base::get_col_indices(i - 1, self.n() - 1))
         } else {
             Box::new(
-                BaseUpperIndex::get_col_indices(self, i - 1, self.n() - 1)
-                    .chain(BaseUpperIndex::get_row_indices(self, i, self.n() - 1)),
+                base::get_col_indices(i - 1, self.n() - 1)
+                    .chain(base::get_row_indices(i, self.n() - 1)),
             )
         }
     }
@@ -64,9 +64,9 @@ pub trait SymmetricUpperTri: BaseUpperIndex {
     }
 }
 
-impl<T: BaseUpperIndex> SymmetricUpperTri for T {}
+impl<T: Triangle> SymmetricUpperTri for T {}
 
-pub trait SymmetricUpperTriMut: BaseUpperIndex + TriangleMut
+pub trait SymmetricUpperTriMut: Triangle + TriangleMut
 where
     Self::Inner: IndexMut<usize>,
 {
@@ -80,16 +80,16 @@ where
         debug_assert!(j <= self.n() - 1);
 
         let index = if i < j {
-            self.get_element_index(i, j - (i + 1), self.n() - 1)
+            base::get_element_index(i, j - (i + 1), self.n() - 1)
         } else {
-            self.get_element_index(j, i - (j + 1), self.n() - 1)
+            base::get_element_index(j, i - (j + 1), self.n() - 1)
         };
 
         &mut self.inner_mut()[index]
     }
 }
 
-impl<T: BaseUpperIndex + TriangleMut> SymmetricUpperTriMut for T where Self::Inner: IndexMut<usize> {}
+impl<T: Triangle + TriangleMut> SymmetricUpperTriMut for T where Self::Inner: IndexMut<usize> {}
 
 #[cfg(test)]
 mod tests {
