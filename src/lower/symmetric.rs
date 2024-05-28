@@ -1,8 +1,8 @@
 //! A symmetric lower triangle matrix abstraction.
 use std::ops::{Index, IndexMut};
 
-use super::base::BaseLowerIndex;
-use crate::TriangleMut;
+use super::base;
+use crate::{Triangle, TriangleMut};
 
 /// A symmetric lower triangle collection.
 ///
@@ -11,16 +11,16 @@ use crate::TriangleMut;
 ///
 /// For all indices `i` and `j` where `i != j`, all pairs of `(i, j)` are equal to
 /// the pair `(j, i)`.
-pub trait SymmetricLowerTri: BaseLowerIndex {
+pub trait SymmetricLowerTri: Triangle {
     /// Get a reference to an element.
     fn get_element<'a>(&'a self, i: usize, j: usize) -> &'a <Self::Inner as Index<usize>>::Output {
         debug_assert!(i <= self.n() - 1);
         debug_assert!(j <= self.n() - 1);
 
         let index = if j < i {
-            self.get_element_index(i - 1, j, self.n() - 1)
+            base::get_element_index(i - 1, j)
         } else {
-            self.get_element_index(j - 1, i, self.n() - 1)
+            base::get_element_index(j - 1, i)
         };
 
         &self.inner()[index]
@@ -47,12 +47,9 @@ pub trait SymmetricLowerTri: BaseLowerIndex {
         debug_assert!(i <= self.n() - 1);
 
         if i == 0 {
-            Box::new(BaseLowerIndex::get_col_indices(self, i, self.n() - 1))
+            Box::new(base::get_col_indices(i, self.n() - 1))
         } else {
-            Box::new(
-                BaseLowerIndex::get_row_indices(self, i - 1, self.n() - 1)
-                    .chain(BaseLowerIndex::get_col_indices(self, i, self.n() - 1)),
-            )
+            Box::new(base::get_row_indices(i - 1).chain(base::get_col_indices(i, self.n() - 1)))
         }
     }
 
@@ -62,9 +59,9 @@ pub trait SymmetricLowerTri: BaseLowerIndex {
     }
 }
 
-impl<T: BaseLowerIndex> SymmetricLowerTri for T {}
+impl<T: Triangle> SymmetricLowerTri for T {}
 
-pub trait SymmetricLowerTriMut: BaseLowerIndex + TriangleMut
+pub trait SymmetricLowerTriMut: Triangle + TriangleMut
 where
     Self::Inner: IndexMut<usize>,
 {
@@ -78,16 +75,16 @@ where
         debug_assert!(j <= self.n() - 1);
 
         let index = if j < i {
-            self.get_element_index(i - 1, j, self.n() - 1)
+            base::get_element_index(i - 1, j)
         } else {
-            self.get_element_index(j - 1, i, self.n() - 1)
+            base::get_element_index(j - 1, i)
         };
 
         &mut self.inner_mut()[index]
     }
 }
 
-impl<T: BaseLowerIndex + TriangleMut> SymmetricLowerTriMut for T where Self::Inner: IndexMut<usize> {}
+impl<T: Triangle + TriangleMut> SymmetricLowerTriMut for T where Self::Inner: IndexMut<usize> {}
 
 #[cfg(test)]
 mod tests {

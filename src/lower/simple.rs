@@ -1,8 +1,8 @@
 //! A simple upper triangle abstraction.
 use std::ops::{Index, IndexMut};
 
-use super::base::BaseLowerIndex;
-use crate::TriangleMut;
+use super::base;
+use crate::{Triangle, TriangleMut};
 
 /// A simple lower triangle collection.
 ///
@@ -10,7 +10,7 @@ use crate::TriangleMut;
 /// the diagonal.
 ///
 /// Any index outside of the lower triangle will cause a panic.
-pub trait SimpleLowerTri: BaseLowerIndex {
+pub trait SimpleLowerTri: Triangle {
     /// Get a reference to an element.
     fn get_element<'a>(&'a self, i: usize, j: usize) -> &'a <Self::Inner as Index<usize>>::Output {
         debug_assert!(i <= self.n() - 1);
@@ -19,7 +19,7 @@ pub trait SimpleLowerTri: BaseLowerIndex {
         assert!(i != 0);
         assert!(j < i);
 
-        let index = self.get_element_index(i - 1, j, self.n() - 1);
+        let index = base::get_element_index(i - 1, j);
         &self.inner()[index]
     }
 
@@ -44,37 +44,40 @@ pub trait SimpleLowerTri: BaseLowerIndex {
         debug_assert!(i <= self.n() - 1);
 
         assert!(i != 0);
-
-        BaseLowerIndex::get_row_start_index(self, i - 1, self.n() - 1)
+        base::get_row_start_index(i - 1)
     }
 
     /// Get the first index of a column.
     fn get_col_start_index(&self, j: usize) -> usize {
         debug_assert!(j <= self.n() - 1);
 
-        BaseLowerIndex::get_col_start_index(self, j, self.n() - 1)
+        base::get_col_start_index(j)
     }
 
     /// Get all indices of a row.
     fn get_row_indices(&self, i: usize) -> impl Iterator<Item = usize> {
-        debug_assert!(i <= self.n() - 1);
+        let n = self.n();
+
+        debug_assert!(i <= n - 1);
 
         assert!(i != 0);
 
-        BaseLowerIndex::get_row_indices(self, i - 1, self.n() - 1)
+        base::get_row_indices(i - 1)
     }
 
     /// Get all indices of a column.
     fn get_col_indices(&self, j: usize) -> impl Iterator<Item = usize> {
-        debug_assert!(j <= self.n() - 1);
+        let n = self.n();
 
-        BaseLowerIndex::get_col_indices(self, j, self.n() - 1)
+        debug_assert!(j <= n - 1);
+
+        base::get_col_indices(j, n - 1)
     }
 }
 
-impl<T: BaseLowerIndex> SimpleLowerTri for T {}
+impl<T: Triangle> SimpleLowerTri for T {}
 
-pub trait SimpleLowerTriMut: BaseLowerIndex + TriangleMut
+pub trait SimpleLowerTriMut: Triangle + TriangleMut
 where
     Self::Inner: IndexMut<usize>,
 {
@@ -90,12 +93,12 @@ where
         assert!(i != 0);
         assert!(j < i);
 
-        let index = self.get_element_index(i - 1, j, self.n() - 1);
+        let index = base::get_element_index(i - 1, j);
         &mut self.inner_mut()[index]
     }
 }
 
-impl<T: BaseLowerIndex + TriangleMut> SimpleLowerTriMut for T where Self::Inner: IndexMut<usize> {}
+impl<T: Triangle + TriangleMut> SimpleLowerTriMut for T where Self::Inner: IndexMut<usize> {}
 
 #[cfg(test)]
 mod tests {
