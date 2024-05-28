@@ -56,14 +56,14 @@ pub trait SimpleUpperTri: Triangle {
     }
 
     /// Get all indices of a row.
-    fn get_row_indices(&self, i: usize) -> impl Iterator<Item = usize> {
+    fn get_row_indices<'a, 'b>(&'a self, i: usize) -> impl Iterator<Item = usize> + 'b {
         debug_assert!(i <= self.n() - 1);
 
         base::get_row_indices(i, self.n() - 1)
     }
 
     /// Get all indices of a column.
-    fn get_col_indices(&self, j: usize) -> impl Iterator<Item = usize> {
+    fn get_col_indices<'a, 'b>(&'a self, j: usize) -> impl Iterator<Item = usize> + 'b {
         debug_assert!(j <= self.n() - 1);
 
         assert!(j != 0);

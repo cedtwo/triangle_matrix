@@ -55,7 +55,7 @@ pub trait SimpleLowerTri: Triangle {
     }
 
     /// Get all indices of a row.
-    fn get_row_indices(&self, i: usize) -> impl Iterator<Item = usize> {
+    fn get_row_indices<'a, 'b>(&'a self, i: usize) -> impl Iterator<Item = usize> + 'b {
         let n = self.n();
 
         debug_assert!(i <= n - 1);
@@ -66,7 +66,7 @@ pub trait SimpleLowerTri: Triangle {
     }
 
     /// Get all indices of a column.
-    fn get_col_indices(&self, j: usize) -> impl Iterator<Item = usize> {
+    fn get_col_indices<'a, 'b>(&'a self, j: usize) -> impl Iterator<Item = usize> + 'b {
         let n = self.n();
 
         debug_assert!(j <= n - 1);

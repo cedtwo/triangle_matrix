@@ -43,7 +43,7 @@ pub trait SymmetricLowerTri: Triangle {
     }
 
     /// Get all indices of a row.
-    fn get_row_indices(&self, i: usize) -> Box<dyn Iterator<Item = usize> + '_> {
+    fn get_row_indices<'a, 'b>(&'a self, i: usize) -> Box<dyn Iterator<Item = usize> + 'b> {
         debug_assert!(i <= self.n() - 1);
 
         if i == 0 {
@@ -54,7 +54,7 @@ pub trait SymmetricLowerTri: Triangle {
     }
 
     /// Get all indices of a column.
-    fn get_col_indices(&self, j: usize) -> impl Iterator<Item = usize> {
+    fn get_col_indices<'a, 'b>(&'a self, j: usize) -> impl Iterator<Item = usize> + 'b {
         SymmetricLowerTri::get_row_indices(self, j)
     }
 }
