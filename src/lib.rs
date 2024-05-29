@@ -240,7 +240,6 @@ pub mod upper;
 pub mod ops;
 
 pub use def::{Triangle, TriangleMut};
-pub use ops::tri_num;
 
 pub use lower::{SimpleLowerTri, SimpleLowerTriMut, SymmetricLowerTri, SymmetricLowerTriMut};
 pub use upper::{SimpleUpperTri, SimpleUpperTriMut, SymmetricUpperTri, SymmetricUpperTriMut};
