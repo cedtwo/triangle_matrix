@@ -11,15 +11,19 @@ use crate::triangle_matrix::{Triangle, TriangleMut};
 
 // A vector represented as a triangle matrix.
 struct TriVec(usize, Vec<usize>);
+
 impl Triangle for TriVec {
     type Inner = Vec<usize>;
+
     fn n(&self) -> usize {
         self.0
     }
+
     fn inner(&self) -> &Self::Inner {
         &self.1
     }
 }
+
 impl TriangleMut for TriVec {
     fn inner_mut(&mut self) -> &mut Self::Inner {
         &mut self.1
@@ -95,6 +99,8 @@ where `j < i`. Does not allow indexing into rows or columns outside of the
 triangle.
 
 ```rust
+use crate::triangle_matrix::SimpleLowerTri;
+
 let n = 5;
 let m = TriVec(n, Vec::from_iter(0..tri_num(n - 1)));
 
