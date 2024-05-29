@@ -56,9 +56,7 @@ pub trait SimpleLowerTri: Triangle {
 
     /// Get all indices of a row.
     fn get_row_indices<'a, 'b>(&'a self, i: usize) -> impl Iterator<Item = usize> + 'b {
-        let n = self.n();
-
-        debug_assert!(i <= n - 1);
+        debug_assert!(i <= self.n() - 1);
 
         assert!(i != 0);
 
@@ -67,11 +65,14 @@ pub trait SimpleLowerTri: Triangle {
 
     /// Get all indices of a column.
     fn get_col_indices<'a, 'b>(&'a self, j: usize) -> impl Iterator<Item = usize> + 'b {
-        let n = self.n();
+        debug_assert!(j <= self.n() - 1);
 
-        debug_assert!(j <= n - 1);
+        base::get_col_indices(j, self.n() - 1)
+    }
 
-        base::get_col_indices(j, n - 1)
+    /// Iterate all `(i, j)` indices of the triangle.
+    fn iter_triangle_indices<'a, 'b>(&'a self) -> impl Iterator<Item = (usize, usize)> + 'b {
+        base::iter_triangle_indices(self.n() - 1).map(|(i, j)| (i + 1, j))
     }
 }
 
@@ -276,6 +277,20 @@ mod tests {
             assert_eq!(m.get_col(1).cloned().collect::<Vec<_>>(), [2, 4, 7]);
             assert_eq!(m.get_col(2).cloned().collect::<Vec<_>>(), [5, 8]);
             assert_eq!(m.get_col(3).cloned().collect::<Vec<_>>(), [9]);
+        }
+
+        #[test]
+        fn test_iter_triangle_indices() {
+            let n = 5;
+            let m = LoTriVec(n, Vec::new());
+
+            #[rustfmt::skip]
+            assert_eq!(m.iter_triangle_indices().collect::<Vec<_>>(), [
+                (1, 0),
+                (2, 0), (2, 1),
+                (3, 0), (3, 1), (3, 2),
+                (4, 0), (4, 1), (4, 2), (4, 3)
+            ]);
         }
     }
 }

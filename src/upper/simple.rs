@@ -70,6 +70,11 @@ pub trait SimpleUpperTri: Triangle {
 
         base::get_col_indices(j - 1, self.n() - 1)
     }
+
+    /// Iterate all `(i, j)` indices of the triangle.
+    fn iter_triangle_indices<'a, 'b>(&'a self) -> impl Iterator<Item = (usize, usize)> + 'b {
+        base::iter_triangle_indices(self.n() - 1).map(|(i, j)| (i, j + 1))
+    }
 }
 
 impl<T: Triangle> SimpleUpperTri for T {}
@@ -275,6 +280,20 @@ mod tests {
             assert_eq!(m.get_col(2).cloned().collect::<Vec<_>>(), [1, 4]);
             assert_eq!(m.get_col(3).cloned().collect::<Vec<_>>(), [2, 5, 7]);
             assert_eq!(m.get_col(4).cloned().collect::<Vec<_>>(), [3, 6, 8, 9]);
+        }
+
+        #[test]
+        fn test_iter_triangle_indices() {
+            let n = 5;
+            let m = UpTriVec(n, Vec::new());
+
+            #[rustfmt::skip]
+            assert_eq!(m.iter_triangle_indices().collect::<Vec<_>>(), [
+                (0, 1), (0, 2), (0, 3), (0, 4),
+                        (1, 2), (1, 3), (1, 4),
+                                (2, 3), (2, 4),
+                                        (3, 4),
+            ]);
         }
     }
 }

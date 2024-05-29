@@ -44,7 +44,7 @@
 //!
 //! ```
 //! # use crate::triangle_matrix::{Triangle, TriangleMut};
-//! # use crate::triangle_matrix::tri_num;
+//! # use crate::triangle_matrix::ops::tri_num;
 //! #
 //! use crate::triangle_matrix::SimpleUpperTri;
 //!
@@ -93,7 +93,7 @@
 //!
 //! ```
 //! # use crate::triangle_matrix::{Triangle, TriangleMut};
-//! # use crate::triangle_matrix::tri_num;
+//! # use crate::triangle_matrix::ops::tri_num;
 //! #
 //! use crate::triangle_matrix::SymmetricUpperTri;
 //!
@@ -143,7 +143,7 @@
 //!
 //! ```
 //! # use crate::triangle_matrix::{Triangle, TriangleMut};
-//! # use crate::triangle_matrix::tri_num;
+//! # use crate::triangle_matrix::ops::tri_num;
 //! #
 //! use crate::triangle_matrix::SimpleLowerTri;
 //!
@@ -192,7 +192,7 @@
 //!
 //! ```
 //! # use crate::triangle_matrix::{Triangle, TriangleMut};
-//! # use crate::triangle_matrix::tri_num;
+//! # use crate::triangle_matrix::ops::tri_num;
 //! #
 //! use crate::triangle_matrix::SymmetricLowerTri;
 //!
@@ -240,6 +240,7 @@ pub mod upper;
 pub mod ops;
 
 pub use def::{Triangle, TriangleMut};
+pub use ops::tri_num;
 
 pub use lower::{SimpleLowerTri, SimpleLowerTriMut, SymmetricLowerTri, SymmetricLowerTriMut};
 pub use upper::{SimpleUpperTri, SimpleUpperTriMut, SymmetricUpperTri, SymmetricUpperTriMut};

@@ -1,4 +1,6 @@
 //! Base lower triangle indexing operations.
+use std::iter;
+
 use crate::ops::tri_num;
 
 /// Get the index of an element.
@@ -24,6 +26,11 @@ pub fn get_row_indices(i: usize) -> impl Iterator<Item = usize> {
 /// Get all indices of a column.
 pub fn get_col_indices(j: usize, n: usize) -> impl Iterator<Item = usize> {
     (0..n - j).map(move |row_index| get_row_start_index(row_index + j) + j)
+}
+
+/// Iterate all `(i, j)` indices of the triangle.
+pub fn iter_triangle_indices(n: usize) -> impl Iterator<Item = (usize, usize)> {
+    (0..n).flat_map(move |i| (0..=i).map(move |j| (i, j)))
 }
 
 #[cfg(test)]
@@ -77,5 +84,31 @@ mod tests {
         assert_eq!(get_col_indices(1, n).collect::<Vec<_>>(), [2, 4, 7]);
         assert_eq!(get_col_indices(2, n).collect::<Vec<_>>(), [5, 8]);
         assert_eq!(get_col_indices(3, n).collect::<Vec<_>>(), [9]);
+    }
+
+    #[test]
+    fn test_iter_triangle_indices() {
+        #[rustfmt::skip]
+        assert_eq!(iter_triangle_indices(1).collect::<Vec<_>>(), [
+            (0, 0)
+        ]);
+        #[rustfmt::skip]
+        assert_eq!(iter_triangle_indices(2).collect::<Vec<_>>(), [
+            (0, 0),
+            (1, 0), (1, 1)
+        ]);
+        #[rustfmt::skip]
+        assert_eq!(iter_triangle_indices(3).collect::<Vec<_>>(), [
+            (0, 0),
+            (1, 0), (1, 1),
+            (2, 0), (2, 1), (2, 2)
+        ]);
+        #[rustfmt::skip]
+        assert_eq!(iter_triangle_indices(4).collect::<Vec<_>>(), [
+            (0, 0),
+            (1, 0), (1, 1),
+            (2, 0), (2, 1), (2, 2),
+            (3, 0), (3, 1), (3, 2), (3, 3)
+        ]);
     }
 }
