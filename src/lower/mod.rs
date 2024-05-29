@@ -1,5 +1,5 @@
 //! Lower triangle traits.
-mod base;
+pub mod base;
 
 mod simple;
 mod symmetric;

@@ -1,28 +1,28 @@
 //! Base upper triangle indexing operations.
-use crate::tri_num;
+use crate::ops::tri_num;
 
 /// Get the index of an element.
-pub(crate) fn get_element_index(i: usize, j: usize, n: usize) -> usize {
+pub fn get_element_index(i: usize, j: usize, n: usize) -> usize {
     tri_num(n) - tri_num(n - i) + j
 }
 
 /// Get the first index of a row.
-pub(crate) fn get_row_start_index(i: usize, n: usize) -> usize {
+pub fn get_row_start_index(i: usize, n: usize) -> usize {
     tri_num(n) - tri_num(n - i)
 }
 
 /// Get the first index of a column.
-pub(crate) fn get_col_start_index(j: usize) -> usize {
+pub fn get_col_start_index(j: usize) -> usize {
     j
 }
 
 /// Get all indices of a row.
-pub(crate) fn get_row_indices(i: usize, n: usize) -> impl Iterator<Item = usize> {
+pub fn get_row_indices(i: usize, n: usize) -> impl Iterator<Item = usize> {
     get_row_start_index(i, n)..get_row_start_index(i + 1, n)
 }
 
 /// Get all indices of a column.
-pub(crate) fn get_col_indices(j: usize, n: usize) -> impl Iterator<Item = usize> {
+pub fn get_col_indices(j: usize, n: usize) -> impl Iterator<Item = usize> {
     (0..=j).map(move |row_index| get_row_start_index(row_index, n) + j - row_index)
 }
 

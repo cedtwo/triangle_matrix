@@ -234,13 +234,12 @@
 //! ```
 mod def;
 
-mod lower;
-mod upper;
+pub mod lower;
+pub mod upper;
 
-mod ops;
+pub mod ops;
 
 pub use def::{Triangle, TriangleMut};
-pub use ops::tri_num;
 
-pub use lower::*;
-pub use upper::*;
+pub use lower::{SimpleLowerTri, SimpleLowerTriMut, SymmetricLowerTri, SymmetricLowerTriMut};
+pub use upper::{SimpleUpperTri, SimpleUpperTriMut, SymmetricUpperTri, SymmetricUpperTriMut};
