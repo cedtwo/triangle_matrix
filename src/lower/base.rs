@@ -1,5 +1,4 @@
 //! Base lower triangle indexing operations.
-use std::iter;
 
 use crate::ops::tri_num;
 

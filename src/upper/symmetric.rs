@@ -1,5 +1,5 @@
 //! A symmetric upper triangle matrix abstraction.
-use std::ops::{Index, IndexMut};
+use std::ops::DerefMut;
 
 use super::base;
 use crate::{Triangle, TriangleMut};
@@ -11,9 +11,9 @@ use crate::{Triangle, TriangleMut};
 ///
 /// For all indices `i` and `j` where `i != j`, all pairs of `(i, j)` are equal to
 /// the pair `(j, i)`.
-pub trait SymmetricUpperTri: Triangle {
+pub trait SymmetricUpperTri<T>: Triangle<T> {
     /// Get a reference to an element.
-    fn get_element<'a>(&'a self, i: usize, j: usize) -> &'a <Self::Inner as Index<usize>>::Output {
+    fn get_element<'a>(&'a self, i: usize, j: usize) -> &'a T {
         debug_assert!(i <= self.n() - 1);
         debug_assert!(j <= self.n() - 1);
 
@@ -27,18 +27,18 @@ pub trait SymmetricUpperTri: Triangle {
     }
 
     /// Get an iterator of references to elements of a row.
-    fn get_row<'a>(
-        &'a self,
-        i: usize,
-    ) -> impl Iterator<Item = &'a <Self::Inner as Index<usize>>::Output> {
+    fn get_row<'a>(&'a self, i: usize) -> impl Iterator<Item = &'a T>
+    where
+        T: 'a,
+    {
         SymmetricUpperTri::get_row_indices(self, i).map(|el| &self.inner()[el])
     }
 
     /// Get an iterator of references to elements of a col.
-    fn get_col<'a>(
-        &'a self,
-        i: usize,
-    ) -> impl Iterator<Item = &'a <Self::Inner as Index<usize>>::Output> {
+    fn get_col<'a>(&'a self, i: usize) -> impl Iterator<Item = &'a T>
+    where
+        T: 'a,
+    {
         SymmetricUpperTri::get_col_indices(self, i).map(|el| &self.inner()[el])
     }
 
@@ -64,18 +64,14 @@ pub trait SymmetricUpperTri: Triangle {
     }
 }
 
-impl<T: Triangle> SymmetricUpperTri for T {}
+impl<T, U: Triangle<T>> SymmetricUpperTri<T> for U {}
 
-pub trait SymmetricUpperTriMut: Triangle + TriangleMut
+pub trait SymmetricUpperTriMut<T>: Triangle<T> + TriangleMut<T>
 where
-    Self::Inner: IndexMut<usize>,
+    Self::Inner: DerefMut<Target = [T]>,
 {
     /// Get a mutable reference to an element.
-    fn get_element_mut<'a>(
-        &'a mut self,
-        i: usize,
-        j: usize,
-    ) -> &'a mut <Self::Inner as Index<usize>>::Output {
+    fn get_element_mut<'a>(&'a mut self, i: usize, j: usize) -> &'a mut T {
         debug_assert!(i <= self.n() - 1);
         debug_assert!(j <= self.n() - 1);
 
@@ -89,7 +85,10 @@ where
     }
 }
 
-impl<T: Triangle + TriangleMut> SymmetricUpperTriMut for T where Self::Inner: IndexMut<usize> {}
+impl<T, U: Triangle<T> + TriangleMut<T>> SymmetricUpperTriMut<T> for U where
+    Self::Inner: DerefMut<Target = [T]>
+{
+}
 
 #[cfg(test)]
 mod tests {
@@ -99,7 +98,7 @@ mod tests {
 
     struct UpTriVec(usize, Vec<usize>);
 
-    impl Triangle for UpTriVec {
+    impl Triangle<usize> for UpTriVec {
         type Inner = Vec<usize>;
 
         fn n(&self) -> usize {
@@ -111,7 +110,7 @@ mod tests {
         }
     }
 
-    impl TriangleMut for UpTriVec {
+    impl TriangleMut<usize> for UpTriVec {
         fn inner_mut(&mut self) -> &mut Vec<usize> {
             &mut self.1
         }
